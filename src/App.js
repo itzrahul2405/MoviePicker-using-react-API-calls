@@ -34,7 +34,7 @@ function App() {
           releaseDate: data[key]['release-date']
         })
       } 
-        setMovies( loadedMovies)
+        setMovies(loadedMovies)
       }
       catch(error){
         // console.error('Error fetching movies:', error)
@@ -51,6 +51,8 @@ function App() {
 
 
 
+
+  
   const addMovieHandler = async(newMovie) => {
     // console.log(newMovie)
     const response = await fetch('https://react-http-ce1f7-default-rtdb.firebaseio.com/movies.json', {
@@ -66,6 +68,30 @@ function App() {
   
 
 
+
+  const deleteMovieHandler = async (ID) => {
+    try {
+      const response = await fetch(`https://react-http-ce1f7-default-rtdb.firebaseio.com/movies/${ID}.json`, {
+        method: 'DELETE'
+      });
+
+      console.log(response)
+  
+      if (!response.ok) {
+        throw new Error('Failed to delete movie');
+      }
+  
+      // Handle success, e.g., update state or trigger a re-fetch of movie data
+      console.log('Movie deleted successfully');
+    } catch (error) {
+      console.error('Error deleting movie:', error.message);
+      // Handle the error, e.g., show an error message to the user
+    }
+  };
+  
+  
+
+
   let content = <p>Loading...</p>
 
   if(!isLoading && error){
@@ -75,7 +101,7 @@ function App() {
     content = <p>Movie Not Found ! </p>
   } 
   if(!isLoading && !error && movies.length> 0){
-    content = <MoviesList movies={movies}/>
+    content = <MoviesList movies={movies} deleteMovie={deleteMovieHandler}/>
   }
 
   return (

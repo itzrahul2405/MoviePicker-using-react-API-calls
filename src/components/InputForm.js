@@ -26,6 +26,10 @@ const InputForm = (props) => {
             'release-date': date
         }
         props.addMovie(obj)
+
+        setTitle('')
+        setText('')
+        setDate('')
     }
 
 
@@ -33,10 +37,10 @@ const InputForm = (props) => {
         <React.Fragment >
             <form className='input-form' onSubmit={addNewMovieHandler}>
                 <label htmlFor='title'>Title: </label>
-                <input type='text' id='title' value={title} onChange={titleHandler}/>
+                <input type='text' id='title' placeholder='Enter Title' value={title} onChange={titleHandler}/>
 
                 <label htmlFor='opening-text'>Opening Text: </label>
-                <textarea rows={5} cols={2} type='text' id='opening-text' value={text} onChange={textHandler}/>
+                <textarea rows={5} cols={2} type='text' id='opening-text' placeholder='Enter Opening Text' value={text} onChange={textHandler}/>
 
                 <label htmlFor='release-date'>Release Date: </label>
                 <input type='date' id='release-date' value={date} onChange={dateHandler}/>

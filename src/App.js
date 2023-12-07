@@ -5,41 +5,36 @@ import { useEffect } from 'react';
 import InputForm from './components/InputForm';
 
 
-
-
 function App() {
 
   const [movies, setMovies] = useState([])
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState(null);
 
-
-  
-  
+ 
   const fetchMoviesHandler = useCallback( async () => {
-
     setIsLoading(true)
     setError(null)
-
     try{      
-      const response = await fetch('https://swapi.dev/api/films')
+      const response = await fetch('https://react-http-ce1f7-default-rtdb.firebaseio.com/movies.json')
       // console.log(response)
       if(!response.ok){
         throw new Error('Something went wrong!')
       }
       const data = await response.json()
       console.log(data)
-      
-      const transformedMovies = data.results.map(movieData => {
-        return {
-            id: movieData.episode_id,
-            title: movieData.title,
-            openingText: movieData.opening_crawl,
-            releaseDate: movieData.release_date
-          }
+
+      const loadedMovies = []
+
+      for(const key in data){
+        loadedMovies.push({
+          id: key,
+          title: data[key].title,
+          openingText: data[key]['opening-text'],
+          releaseDate: data[key]['release-date']
         })
-  
-        setMovies( transformedMovies)
+      } 
+        setMovies( loadedMovies)
       }
       catch(error){
         // console.error('Error fetching movies:', error)
@@ -56,8 +51,17 @@ function App() {
 
 
 
-  const addMovieHandler = (newMovie) => {
-    console.log(newMovie)
+  const addMovieHandler = async(newMovie) => {
+    // console.log(newMovie)
+    const response = await fetch('https://react-http-ce1f7-default-rtdb.firebaseio.com/movies.json', {
+      method: 'POST',
+      body: JSON.stringify(newMovie),
+      header: {
+        'Content-Type': 'application/json'
+      }
+    })
+    const data = await response.json();
+    console.log(data)
   }
   
 
@@ -67,7 +71,6 @@ function App() {
   if(!isLoading && error){
     content = <p>{error}</p>
   }
-
   if(!isLoading && !error && movies.length === 0){
     content = <p>Movie Not Found ! </p>
   } 

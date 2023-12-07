@@ -1,6 +1,8 @@
 
 
 .movie {
+  width: 100%;
+  height: auto;
     list-style: none;
     background: linear-gradient(
       to bottom,

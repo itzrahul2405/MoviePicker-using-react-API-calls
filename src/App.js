@@ -1,5 +1,5 @@
 import './App.css';
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import MoviesList from './components/MoviesList';
 import { useEffect } from 'react';
 
@@ -11,17 +11,17 @@ function App() {
   const [movies, setMovies] = useState([])
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState(null);
-  const [retryIntervalId, setRetryIntervalId] = useState(null)
+
 
   
   
-  const fetchMoviesHandler = async () => {
+  const fetchMoviesHandler = useCallback( async () => {
 
     setIsLoading(true)
     setError(null)
 
     try{      
-      const response = await fetch('https://swapi.dev/api/film')
+      const response = await fetch('https://swapi.dev/api/films')
       // console.log(response)
       if(!response.ok){
         throw new Error('Something went wrong!')
@@ -43,37 +43,22 @@ function App() {
       catch(error){
         // console.error('Error fetching movies:', error)
         setError(error.message)
-        startRetrying();
       }
       setIsLoading(false)
-  }
+  }, [])
 
-
-  const startRetrying = () => {
-    setRetryIntervalId(setInterval(() => {
-      fetchMoviesHandler()
-    }, 5000))
-  }
-
-  const cancelRetrying = () => {
-    clearInterval(retryIntervalId)
-    setRetryIntervalId(null)
-  }
 
   useEffect(() => {
-    return () => {
-      // Cleanup function to clear the interval when the component is unmounted
-      if (retryIntervalId) {
-        clearInterval(retryIntervalId);
-      }
-    };
-  }, [retryIntervalId]);
+    fetchMoviesHandler()
+  }, [fetchMoviesHandler])
+  // when page is refresh function is recreated => infinite call ( to avoid it use usecallback) 
+  
 
 
   let content = <p>Loading...</p>
 
   if(!isLoading && error){
-    content = <p>{error} <strong>...Retrying</strong><button onClick={cancelRetrying}>Cancel</button></p>
+    content = <p>{error}</p>
   }
 
   if(!isLoading && !error && movies.length === 0){

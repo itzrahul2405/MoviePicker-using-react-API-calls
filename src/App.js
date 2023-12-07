@@ -2,6 +2,7 @@ import './App.css';
 import React, { useCallback, useState } from 'react'
 import MoviesList from './components/MoviesList';
 import { useEffect } from 'react';
+import InputForm from './components/InputForm';
 
 
 
@@ -52,6 +53,12 @@ function App() {
     fetchMoviesHandler()
   }, [fetchMoviesHandler])
   // when page is refresh function is recreated => infinite call ( to avoid it use usecallback) 
+
+
+
+  const addMovieHandler = (newMovie) => {
+    console.log(newMovie)
+  }
   
 
 
@@ -72,6 +79,7 @@ function App() {
     <React.Fragment>
       <section>
         <button onClick={fetchMoviesHandler} className='btn'>Fetch Movies</button>
+        <InputForm addMovie={addMovieHandler}/>
       </section>
       <section>
         {content}

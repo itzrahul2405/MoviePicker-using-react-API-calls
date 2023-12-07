@@ -1,0 +1,28 @@
+
+.input-form {
+    display: flex;
+    flex-direction: column;
+    max-width: 300px;
+    margin: 0 auto;
+  }
+  
+  .input-form label {
+    margin-bottom: 5px;
+  }
+  
+  .input-form input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+  }
+
+  .input-form button{
+    background-color: rgb(23, 139, 211);
+    width: 300px;
+    height: 50px;
+  }
+
+  .input-form button:hover{
+    background-color: #a59d9d;
+  }
+  
